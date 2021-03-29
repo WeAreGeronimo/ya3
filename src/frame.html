@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link href="stories.css" rel="stylesheet">
+    </head>
+    <body class="theme_light">
+        <script src="stories.js"></script>
+        <script>
+        const bodyEl = document.getElementById('bodyHtml');
+
+        function  getParameter(paramsName) {
+        let parameters = new URLSearchParams(window.location.search);
+        return parameters.get(paramsName);
+        }
+
+        function theme_toggle(toggle) {
+        if(toggle == "dark") {
+        if(bodyEl.classList.value == "theme_light") {
+        bodyEl.classList.remove("theme_light");
+        }
+        bodyEl.classList.add("theme_dark")
+
+        };
+        if(toggle == "light") {
+        if(bodyEl.classList.value == "theme_dark") {
+        bodyEl.classList.remove("theme_dark");
+        }
+        bodyEl.classList.add("theme_light");
+        }
+
+        }
+
+        fetch('http://localhost:8080/data.json')
+        .then(response => response.json())
+        .then(parsedData => {
+        const arrayElement = (getParameter("slide") == null) ? 0 : getParameter("slide") ;
+        const theme_name = (getParameter("theme") == null) ? "dark" : getParameter("theme") ;
+        theme_toggle(theme_name);
+        bodyEl.innerHTML = window.renderTemplate(parsedData[arrayElement].alias,
+        parsedData[arrayElement].data);
+        });
+        </script>
+    </body>
+</html>
